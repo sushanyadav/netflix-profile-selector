@@ -12,15 +12,6 @@ import { useEffect, useRef, useState } from "react";
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const getPosition = (el: HTMLElement) => {
-  const rect = el.getBoundingClientRect();
-
-  return {
-    x: rect.left,
-    y: rect.top,
-  };
-};
-
 const debounce = (fn: Function, ms: number) => {
   let timeout: NodeJS.Timeout;
   return function (...args: any) {
@@ -28,6 +19,8 @@ const debounce = (fn: Function, ms: number) => {
     timeout = setTimeout(() => fn(...args), ms);
   };
 };
+
+let timer;
 
 export const Homepage = () => {
   const items = [
@@ -58,6 +51,9 @@ export const Homepage = () => {
 
   const [scope, animate] = useAnimate();
   const [loading, setLoading] = useState(false);
+  const [animationState, setAnimationState] = useState<
+    "idle" | "animating" | "done"
+  >("idle");
 
   useEffect(() => {
     if (!divRef.current) return;
@@ -94,6 +90,7 @@ export const Homepage = () => {
     const y = targetScopePosition().y;
 
     const animation = async () => {
+      setAnimationState("animating");
       await sleep(2000);
       try {
         animate(
@@ -163,6 +160,7 @@ export const Homepage = () => {
             delay: 0.1,
           }
         );
+        setAnimationState("done");
       } catch (error) {
         console.error(error);
       }
@@ -230,7 +228,14 @@ export const Homepage = () => {
                 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                onClick={() => setActiveItem(undefined)}
+                onClick={() => {
+                  if (animationState !== "animating") {
+                    setActiveItem(undefined);
+                    timer = setTimeout(() => {
+                      setAnimationState("idle");
+                    }, 1000);
+                  }
+                }}
                 id="overlay"
                 className="fixed inset-0 bg-black"
               >
@@ -248,13 +253,9 @@ export const Homepage = () => {
           </AnimatePresence>
           <AnimatePresence>
             {activeItem && (
-              <div className="absolute z-40 -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+              <div className="absolute pointer-events-none z-40 -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
                 <motion.div>
-                  <motion.button
-                    id="activeItemContainer"
-                    onClick={() => setActiveItem(undefined)}
-                    className="space-y-2"
-                  >
+                  <motion.button id="activeItemContainer" className="space-y-2">
                     <motion.img
                       whileTap={{ scale: 0.95 }}
                       src={activeItem.imgUrl}
@@ -296,7 +297,12 @@ export const Homepage = () => {
             return (
               <motion.button
                 key={item.id}
-                onClick={() => setActiveItem(item)}
+                onClick={() => {
+                  if (animationState === "idle") {
+                    setActiveItem(item);
+                    clearTimeout(timer);
+                  }
+                }}
                 className="group space-y-1.5 md:space-y-2"
                 transition={{
                   type: "spring",
