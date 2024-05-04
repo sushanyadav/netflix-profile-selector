@@ -93,7 +93,7 @@ export const Homepage = () => {
     const animation = async () => {
       setAnimationState("animating");
 
-      await sleep(2000);
+      await sleep(1000000);
       try {
         animate(
           ".nfLoader",
@@ -348,7 +348,7 @@ export const Homepage = () => {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0, transition: { delay: 0 } }}
                     transition={{ delay: 0.1 }}
-                    className="nfLoader size-8 md:size-12 mx-auto mt-3 md:mt-6 -translate-x-6 md:-translate-x-8"
+                    className="nfLoader size-8 md:size-12 mx-auto mt-3 md:mt-6 -translate-x-3.5 md:-translate-x-8"
                   />
                 </div>
               )}
