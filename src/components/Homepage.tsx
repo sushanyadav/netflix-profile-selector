@@ -290,13 +290,13 @@ export const Homepage = () => {
             </AnimatePresence>
             <AnimatePresence>
               {activeItem && (
-                <div className="max-w-lg fixed inset-0 w-full h-full flex items-end mx-auto border-x border-[rgba(187,_192,_223,_0.08)]">
+                <div className="max-w-lg fixed inset-0 w-full h-full flex items-end mx-auto border-x border-[rgba(187,_192,_223,_0.15)]">
                   <motion.div
                     initial={{
                       opacity: 0,
                     }}
                     id="border-top"
-                    className="w-full h-[72px] border-t border-[rgba(187,_192,_223,_0.08)]"
+                    className="w-full h-[72px] border-t border-[rgba(187,_192,_223,_0.15)]"
                   ></motion.div>
                 </div>
               )}
