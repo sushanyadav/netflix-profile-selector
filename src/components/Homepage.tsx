@@ -93,7 +93,7 @@ export const Homepage = () => {
     const animation = async () => {
       setAnimationState("animating");
 
-      await sleep(1000000);
+      await sleep(2000);
       try {
         animate(
           ".nfLoader",
