@@ -206,7 +206,7 @@ export const Homepage = () => {
   if (loading) {
     return (
       <div className="grid place-items-center min-h-screen text-center bg-[#0a0a0a]">
-        <div className="nfLoader"></div>
+        <div className="nfLoader size-8 md:size-12"></div>
       </div>
     );
   }
