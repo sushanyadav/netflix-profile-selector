@@ -7,6 +7,7 @@ import {
   motion,
   useAnimate,
 } from "framer-motion";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -202,6 +203,15 @@ export const Homepage = () => {
         mass: 0.6,
       }}
     >
+      <div className="w-full h-20 z-20 sticky py-4  max-w-lg mx-auto px-5">
+        <Image
+          width={128}
+          height={128}
+          src="/logo.png"
+          alt=""
+          className="h-10 w-10 object-contain"
+        />
+      </div>
       <div className="grid fixed inset-0 border-x border-[rgba(187,_192,_223,_0.06)] place-items-center min-h-[100dvh] max-w-lg text-center mx-auto">
         <div
           aria-hidden
