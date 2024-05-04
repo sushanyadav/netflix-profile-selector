@@ -227,11 +227,11 @@ export const Homepage = () => {
             height={128}
             src="/logo.png"
             alt=""
-            className="h-10 w-10 object-contain"
+            className="[-webkit-user-drag:none] select-none h-10 w-10 object-contain"
           />
-          <div className="h-[calc(100dvh-72px)] pointer-events-none flex items-center justify-center absolute inset-0">
-            <AnimatePresence>
-              {activeItem && (
+          <AnimatePresence>
+            {activeItem && (
+              <div className="h-[calc(100dvh-72px)] z-20 flex items-center justify-center absolute inset-0">
                 <motion.span
                   initial={{
                     opacity: 0,
@@ -248,13 +248,13 @@ export const Homepage = () => {
                     src="/netflix-huge.png"
                     width={280}
                     height={280}
-                    className="object-contain w-[240px] md:w-[280px]"
+                    className=" [-webkit-user-drag:none] select-none object-contain w-[240px] md:w-[280px]"
                     alt="Logo"
                   />
                 </motion.span>
-              )}
-            </AnimatePresence>
-          </div>
+              </div>
+            )}
+          </AnimatePresence>
         </div>
         <div className="grid fixed inset-0 border-x border-[rgba(187,_192,_223,_0.06)] place-items-center min-h-[100dvh] max-w-lg text-center mx-auto">
           <div
@@ -285,29 +285,31 @@ export const Homepage = () => {
                   }}
                   id="overlay"
                   className="fixed inset-0 bg-black"
-                >
-                  <div className="max-w-lg w-full h-full flex items-end mx-auto border-x border-[rgba(187,_192,_223,_0.15)]">
-                    <motion.div
-                      initial={{
-                        opacity: 0,
-                      }}
-                      id="border-top"
-                      className="w-full h-[72px] border-t border-[rgba(187,_192,_223,_0.15)]"
-                    ></motion.div>
-                  </div>
-                </motion.div>
+                ></motion.div>
               )}
             </AnimatePresence>
             <AnimatePresence>
               {activeItem && (
-                <div className="absolute pointer-events-none z-40 -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                <div className="max-w-lg fixed inset-0 w-full h-full flex items-end mx-auto border-x border-[rgba(187,_192,_223,_0.08)]">
+                  <motion.div
+                    initial={{
+                      opacity: 0,
+                    }}
+                    id="border-top"
+                    className="w-full h-[72px] border-t border-[rgba(187,_192,_223,_0.08)]"
+                  ></motion.div>
+                </div>
+              )}
+            </AnimatePresence>
+            <AnimatePresence>
+              {activeItem && (
+                <div className="absolute z-40 -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
                   <motion.div>
                     <motion.button
                       id="activeItemContainer"
                       className="space-y-2"
                     >
                       <motion.img
-                        whileTap={{ scale: 0.95 }}
                         src={activeItem.imgUrl}
                         id="activeItem"
                         transition={{
@@ -315,6 +317,15 @@ export const Homepage = () => {
                             type: "spring",
                             bounce: 0.35,
                           },
+                        }}
+                        onClick={() => {
+                          if (animationState !== "animating") {
+                            clearTimeout(timer);
+                            setActiveItem(undefined);
+                            timer = setTimeout(() => {
+                              setAnimationState("idle");
+                            }, 1000);
+                          }
                         }}
                         style={{
                           borderRadius: "8px",
